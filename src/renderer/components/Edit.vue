@@ -7,6 +7,11 @@
                   :placeholder="$t('articleTitlePlaceholder')"></el-input>
       </el-form-item>
 
+      <el-form-item prop="path">
+        <el-input v-model="postForm.path" :readonly="true" :disabled="true"
+                  :placeholder="$t('articleTitlePlaceholder')"></el-input>
+      </el-form-item>
+
       <el-form-item prop="content" v-loading="uploading" :element-loading-text="uploadingText">
         <mavon-editor ref="editor" v-model="postForm.content" :toolbars="toolbars" :ishljs="true"
                       codeStyle="atom-one-dark"
@@ -61,7 +66,8 @@
           tags: [],
           categories: [],
           date: '',
-          toc: false
+          toc: false,
+          path: ''
         },
         postFormRules: {
           title: [
@@ -145,6 +151,9 @@
             case 'title':
               me.postForm.title = post.title.trim()
               break
+            case 'path':
+              me.postForm.path = post.path.trim()
+              break
             case '_content':
               me.postForm.originContent = post._content.trim()
               me.postForm.content = post._content.trim()
@@ -179,6 +188,7 @@
         let valid = await this.$store.dispatch('Hexo/validatePostForm', this.$refs.postForm)
         if (valid) {
           try {
+            this.postForm.new_post_path = this.postForm.path
             await this.$store.dispatch('Hexo/createPost', this.postForm)
             this.formChanged = false
             this.postForm.originContent = this.postForm.content

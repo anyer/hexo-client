@@ -1,10 +1,16 @@
 <template>
   <el-main>
-
     <el-form :model="postForm" :rules="postFormRules" ref="postForm">
       <el-form-item prop="title">
-        <el-input v-model="postForm.title" @input="formChanged = true"
-                  :placeholder="$t('articleTitlePlaceholder')"></el-input>
+        <el-col :span="11">
+          <el-input v-model="postForm.title" @input="formChanged = true"
+                    :placeholder="$t('articleTitlePlaceholder')"></el-input>
+        </el-col>
+        <el-col :span="2"></el-col>
+        <el-col :span="11">
+          <el-input v-model="postForm.path" @input="formChanged = true"
+                    :placeholder="$t('articlePathPlaceholder')"></el-input>
+        </el-col>
       </el-form-item>
 
       <el-form-item prop="content" v-loading="uploading" :element-loading-text="uploadingText">
@@ -60,7 +66,8 @@
           content: '',
           tags: [],
           categories: [],
-          toc: false
+          toc: false,
+          path: ''
         },
         postFormRules: {
           title: [
